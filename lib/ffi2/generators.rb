@@ -115,7 +115,14 @@ module FFI
       end
 
       def defines
-        Rubinius::BUILD_CONFIG[:defines].map{|f| "-D#{f}" }.join(" ")
+        case @kind
+        when :c
+          RbConfig::CONFIG["CFLAGS"]
+        when :cpp, :cxx
+          RbConfig::CONFIG["CPPFLAGS"] || RbConfig["CXXFLAGS"]
+        else
+          RbConfig::CONFIG["CFLAGS"]
+        end
       end
 
       def windows?
@@ -125,11 +132,11 @@ module FFI
       def compiler
         case @kind
         when :c
-          Rubinius::BUILD_CONFIG[:cc]
+          RbConfig::CONFIG["CC"]
         when :cpp, :cxx
-          Rubinius::BUILD_CONFIG[:cxx]
+          RbConfig::CONFIG["CXX"] || RbConfig::CONFIG["CC"]
         else
-          Rubinius::BUILD_CONFIG[:cc]
+          RbConfig::CONFIG["CC"]
         end
       end
 
