@@ -4,6 +4,8 @@ require "ffi2/generators/structures"
 require "ffi2/generators/types"
 require "ffi2/generators/file_processor"
 
+require "rbconfig"
+
 module FFI
   module Generators
 
